@@ -1,5 +1,5 @@
 /*  ========================================================================
- *  Frosty.js
+ *  Frosty.js v1.0
  *  https://github.com/owensbla/frosty
  *  http://labs.blakeowens.com/frosty
  *
@@ -93,6 +93,7 @@
             switch (state) {
                 case 'visible':
                     this.$el.appendTo('body');
+                    this._setPosition();
                     this.options.onShown.call(this);
                     this.$anchor.trigger('shown');
                     break;
