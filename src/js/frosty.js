@@ -34,7 +34,7 @@
         attribute: 'title',
         delay: 0,
         hasArrow: true,
-        offset: 5,
+        offset: 10,
         onHidden: function() {},
         onShown: function() {},
         position: 'top',
