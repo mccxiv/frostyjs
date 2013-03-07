@@ -16,7 +16,11 @@ $(document).ready(function(){
         }
       }
     }
-    $(this).before("<pre class='lines'>" + lines.join("\n") + "</pre>");
+    if ($(this).hasClass('hidden')) { 
+      $(this).before("<pre class='lines hidden'>" + lines.join("\n") + "</pre>");
+    } else {
+      $(this).before("<pre class='lines'>" + lines.join("\n") + "</pre>");
+    }
   });
 
   var headings = [];

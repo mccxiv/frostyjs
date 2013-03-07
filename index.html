@@ -7,7 +7,9 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 
   <link rel="stylesheet" href="stylesheets/stylesheet.css" media="screen"/>
+  <link rel="stylesheet" href="stylesheets/frosty.css" media="screen"/>
   <link rel="stylesheet" href="stylesheets/pygment_trac.css"/>
+
   <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
   <script type="text/javascript" src="javascripts/script.js"></script>
 
@@ -15,7 +17,6 @@
   <meta name="description" content="Lightweight, extendable jQuery tooltip plugin.">
 
   <meta name="viewport" content="width=device-width,initial-scale=1">
-
 </head>
 
 <body>
@@ -36,17 +37,241 @@
         <span class="blc"></span><span class="trc"></span>
         </div>
         <article class="markdown-body">
-          <h1>Frosty.js</h1>
+          <section id="examples">
+            <h2>Examples</h2>
+            <div class="example">
+              <h3>Positioning</h3>
+              <div class="example-text">
+                <ul class="examples-list">
+                  <li><span class="has-tip" title="Top!">Top tip.</span></li>
+                  <li><span class="has-tip" title="Left!" data-position="left">Left tip.</span></li>
+                  <li><span class="has-tip" title="Right!" data-position="right">Right tip.</span></li>
+                  <li><span class="has-tip" title="Bottom!" data-position="bottom">Bottom tip.</span></li>
+                </ul>
+              </div>
+            </div>
+            <div class="example">
+              <h3>Styles</h3>
+              <div class="example-text">
+                <ul class="examples-list">
+                  <li><span class="has-tip" title="Hello :) This is the default tip but it has multiple lines! max-width win!">Default tip.</span></li>
+                  <li><span class="has-tip success" title="Great success!">Success tip.</span></li>
+                  <li><span class="has-tip error" title="Fail.">Error tip.</span></li>
+                  <li><span class="has-tip light" title="A light tip for a dark site.">Light tip.</span></li>
+                  <li><span class="has-tip" title="Here I am!" data-delay="500">Wait for it...</span></li>
+                </ul>
+              </div>
+            </div>
+            <div class="example">
+              <h3>Advanced</h3>
+              <div class="example-text">
+                <ul class="examples-list">
+                  <li><span class="html-tip">HTML</span></li>
+                  <li><span class="selector-tip">Selectors</span></li>
+                  <li><span class="events-tip" title="onShown and onHidden events, oh my!">Events</span></li>
+                  <li><span class="has-tip" data-trigger="click" title="I only show on clicks.">Click me.</span></li>
+                </ul>
+              </div>
+              <div class="ignore">
+                <p>*I came from here.</p>
+              </div>
+            </div>
+          </section>
 
-<p>Lightweight, extendable jQuery tooltip plugin.</p>
+          <section id="usage">
+            <h2>Usage</h2>
+            <div class="usage">
+              <h4>Create your tips:</h4>
+<pre>
+$('.has-tip').frosty();
+</pre>
+            </div>
+            <div class="usage">
+              <h4>Pass options to your tips:</h4>
+<pre>
+$('.has-tip.tip-left').frosty({
+  position: 'left'
+});
+</pre>
+            </div>
+            <div class="usage">
+              <h4>Add/remove classes from your tips:</h4>
+<pre>
+// A good thing happened.
+$('.has-tip').frosty('addClass', 'success');
+
+// A bad thing happened.
+$('.has-tip').frosty('removeClass', 'success');
+$('.has-tip').frosty('addClass', 'error');  
+</pre>
+            </div>
+            <div class="usage">
+              <h4>Manually perform actions on your tips:</h4>
+<pre>
+$('.has-tip').frosty('show');
+$('.has-tip').frosty('hide');
+$('.has-tip').frosty('toggle');
+</pre>
+            </div>
+          </section>
+          <section id="api">
+            <h2>API</h2>
+            <div class="action">
+              <h5>show</h5>
+              <p>Show the tooltip.</p>
+              <p class="code">$('.has-tip').frosty('show');</p>
+            </div>
+            <div class="action">
+              <h5>hide</h5>
+              <p>Hide the tooltip.</p>
+              <p class="code">$('.has-tip').frosty('hide');</p>
+            </div>
+            <div class="action">
+              <h5>toggle</h5>
+              <p>Toggle display of the tooltip.</p>
+              <p class="code">$('.has-tip').frosty('toggle');</p>
+            </div>
+            <div class="action">
+              <h5>addClass</h5>
+              <p>Add a class to the tooltip.</p>
+              <p class="code">$('.has-tip').frosty('addClass', 'success');</p>
+            </div>
+            <div class="action">
+              <h5>removeClass</h5>
+              <p>Remove a class from the tooltip.</p>
+              <p class="code">$('.has-tip').frosty('removeClass', 'success');</p>
+            </div>
+          </section>
+          <section id="options">
+            <h2>Options</h2>
+            <div class="option">
+              <h5>attribute (string) <span class="default">defaults to 'title'</span> <a class="toggle" data-toggle="#title">ex.</a></h5>
+              <p>Attribute the tip is pulled from.</p>
+            </div>
+<pre class="hidden example" id="title">
+$('.has-tip').frosty({
+  attribute: 'data-title'
+});
+</pre>
+            <div class="option">
+              <h5>className (string) <span class="default">defaults to 'tip'</span>  <a class="toggle" data-toggle="#className">ex.</a></h5>
+              <p>CSS class(es) applied to the tooltip. Same behavior as the class attribute on an element.</p>
+            </div>
+<pre class="hidden example" id="className">
+$('.has-tip').frosty({
+  className: 'tip light'
+});
+</pre>
+            <div class="option">
+              <h5>content (string) <span class="default">defaults to ''</span>  <a class="toggle" data-toggle="#content">ex.</a></h5>
+              <p>Used with 'html': true to directly set the tips content.</p>
+            </div>
+<pre class="hidden example" id="content">
+$('.has-tip').frosty({
+  content: '&lt;h3&gt;This is a header.&lt;/h3&gt;',
+  html: true
+});
+</pre>
+            <div class="option">
+              <h5>delay (integer, object) <span class="default">defaults to 0</span>  <a class="toggle" data-toggle="#delay">ex.</a></h5>
+              <p>Sets the show/hide delay. Accepts an object for separate values: { show: 500, hide: 200 }</p>
+            </div>
+<pre class="hidden example" id="delay">
+$('.has-tip').frosty({
+  delay: {
+    show: 500,
+    hidden: 200
+  }
+});
+</pre>
+            <div class="option">
+              <h5>hasArrow (boolean) <span class="default">defaults to true</span>  <a class="toggle" data-toggle="#hasArrow">ex.</a></h5>
+              <p>Adds a has-arrow class to the tip to be handled by CSS.</p>
+            </div>
+<pre class="hidden example" id="hasArrow">
+$('.has-tip').frosty({
+  hasArrow: true
+});
+</pre>
+            <div class="option">
+              <h5>html (boolean) <span class="default">defaults to false</span>  <a class="toggle" data-toggle="#html">ex.</a></h5>
+              <p>Set to true before setting the 'content' option</p>
+            </div>
+<pre class="hidden example" id="html">
+$('.has-tip').frosty({
+  content: '&lt;h3&gt;This is another header.&lt;/h3&gt;',
+  html: true
+});
+</pre>
+            <div class="option">
+              <h5>offset (integer) <span class="default">defaults to 10</span>  <a class="toggle" data-toggle="#offset">ex.</a></h5>
+              <p>Offset in pixels between the anchor element and the tip.</p>
+            </div>
+<pre class="hidden example" id="offset">
+$('.has-tip').frosty({
+  offset: 15
+});
+</pre>
+            <div class="option">
+              <h5>position (string) <span class="default">defaults to 'top'</span>  <a class="toggle" data-toggle="#position">ex.</a></h5>
+              <p>Anchor position. Accepts 'top', 'bottom', 'left', 'right'.</p>
+            </div>
+<pre class="hidden example" id="position">
+$('.has-tip').frosty({
+  positon: 'right'
+});
+</pre>
+            <div class="option">
+              <h5>selector (string) <span class="default">defaults to false</span>  <a class="toggle" data-toggle="#selector">ex.</a></h5>
+              <p>Will render the tip with the HTML of the target element if set.</p>
+            </div>
+<pre class="hidden example" id="selector">
+$('.has-tip').frosty({
+  selector: '#tip-template'
+});
+</pre>
+            <div class="option">
+              <h5>trigger (string) <span class="default">defaults to 'hover'</span> <a class="toggle" data-toggle="#trigger">ex.</a></h5>
+              <p>Action that triggers the tip. Accepts 'hover', 'click', 'manual', 'focus'.</p>
+            </div>
+<pre class="hidden example" id="trigger">
+$('.has-tip').frosty({
+  trigger: 'focus' // for inputs
+});
+</pre>
+            <div class="option">
+              <h5>onHidden (function) <span class="default">defaults to empty function</span> <a class="toggle" data-toggle="#onHidden">ex.</a></h5>
+              <p>Function called when the tip is hidden.</p>
+            </div>
+<pre class="hidden example" id="onHidden">
+$('.has-tip').frosty({
+  onHidden: function() {
+    alert("The tip was hidden!");
+  }
+});
+</pre>
+            <div class="option">
+              <h5>onShown (function) <span class="default">defaults to empty function</span> <a class="toggle" data-toggle="#onShown">ex.</a></h5>
+              <p>Function called when the tip is shown.</p>
+            </div>
+<pre class="hidden example" id="onShown">
+$('.has-tip').frosty({
+  onShown: onShown: function() {
+    alert("The tip was shown!");
+  }
+});
+</pre>
+          </section>
         </article>
       </div>
     </div>
     <footer>
       <div class="owner">
-      <p><a href="https://github.com/owensbla" class="avatar"><img src="https://secure.gravatar.com/avatar/38564a716cd2584102c9d0885c6c401b?s=30&amp;d=https://a248.e.akamai.net/assets.github.com%2Fimages%2Fgravatars%2Fgravatar-user-420.png" width="48" height="48"/></a> <a href="https://github.com/owensbla">owensbla</a> maintains <a href="https://github.com/owensbla/frostyjs">Frosty.js</a></p>
-
-
+        <p>
+          <a href="https://github.com/owensbla" class="avatar">
+            <img src="https://secure.gravatar.com/avatar/38564a716cd2584102c9d0885c6c401b?s=30&amp;d=https://a248.e.akamai.net/assets.github.com%2Fimages%2Fgravatars%2Fgravatar-user-420.png" width="48" height="48"/>
+          </a> <a href="https://github.com/owensbla">owensbla</a> maintains <a href="https://github.com/owensbla/frostyjs">Frosty.js</a>
+        </p>
       </div>
       <div class="creds">
         <small>This page generated using <a href="https://pages.github.com/">GitHub Pages</a><br/>theme by <a href="http://twitter.com/jonrohan/">Jon Rohan</a></small>
@@ -58,17 +283,41 @@
     <a href="https://github.com/owensbla/frostyjs/tarball/master" class="tar">tar</a><a href="https://github.com/owensbla/frostyjs/zipball/master" class="zip">zip</a><a href="" class="code">source code</a>
     <p class="name"></p>
   </div>
-
-            <script type="text/javascript">
-            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
-            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
-          </script>
-          <script type="text/javascript">
-            try {
-              var pageTracker = _gat._getTracker("UA-39104708-1");
-            pageTracker._trackPageview();
-            } catch(err) {}
-          </script>
+  <script type="text/javascript" src="javascripts/main.js"></script>
+  <script type="text/javascript" src="javascripts/frosty.js"></script>
+  <script type="text/javascript">
+    $(document).ready(function(){
+        $('.has-tip').frosty();
+        $('.has-tip.success').frosty('addClass', 'success');
+        $('.has-tip.error').frosty('addClass', 'error');
+        $('.has-tip.light').frosty('addClass', 'light');
+        $('.html-tip').frosty({
+          html: true,
+          content: '<h3>This is a header!</h3>'
+        });
+        $('.selector-tip').frosty({
+          selector: '.ignore'
+        });
+        $('.events-tip').frosty({
+          onShown: function() {
+            $('.ignore').text('Look, I changed the text when I was shown.');
+          },
+          onHidden: function() {
+            $('.ignore').text('Now I was hidden. Look at the selector tip again!');
+          }
+        });
+    });
+  </script>
+  <script type="text/javascript">
+    var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+    document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+  </script>
+  <script type="text/javascript">
+    try {
+    var pageTracker = _gat._getTracker("UA-39104708-1");
+    pageTracker._trackPageview();
+    } catch(err) {}
+  </script>
 
 </body>
 </html>
