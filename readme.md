@@ -1,4 +1,4 @@
-# Frosty.js
+## Frosty.js
 Lightweight, extendable jQuery tooltip plugin.
 
 ## Basic Usage
