@@ -35,6 +35,7 @@
         html: false,
         offset: 10,
         position: 'top',
+        removeTitle: true,
         selector: false,
         trigger: 'hover',
         onHidden: function() {},
@@ -120,6 +121,10 @@
                 this.tipContent = $(this.options.selector).html();
             } else {
                 this.tipContent = this.$anchor.attr(this.options.attribute);
+                if (this.options.attribute === 'title' && this.options.removeTitle) {
+                    this.$anchor.attr('data-original-title', this.tipContent);
+                    this.$anchor.removeAttr('title');
+                }
             }
 
             this.$el = $('<div />', {
