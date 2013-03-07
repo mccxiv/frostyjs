@@ -144,6 +144,7 @@ $('.has-tip').frosty('toggle');
           </section>
           <section id="options">
             <h2>Options</h2>
+            <p>Options can be set by passing an object on initializing or by adding attributes to the tooltip element.</p>
             <div class="option">
               <h5>attribute (string) <span class="default">defaults to 'title'</span> <a class="toggle" data-toggle="#title">ex.</a></h5>
               <p>Attribute the tip is pulled from.</p>
@@ -152,6 +153,10 @@ $('.has-tip').frosty('toggle');
 $('.has-tip').frosty({
   attribute: 'data-title'
 });
+
+OR
+
+&lt;a class="has-tip" data-attribute="data-title"...
 </pre>
             <div class="option">
               <h5>className (string) <span class="default">defaults to 'tip'</span>  <a class="toggle" data-toggle="#className">ex.</a></h5>
@@ -183,6 +188,10 @@ $('.has-tip').frosty({
     hidden: 200
   }
 });
+
+OR
+
+&lt;a class="has-tip" data-delay="500"...
 </pre>
             <div class="option">
               <h5>hasArrow (boolean) <span class="default">defaults to true</span>  <a class="toggle" data-toggle="#hasArrow">ex.</a></h5>
@@ -211,6 +220,10 @@ $('.has-tip').frosty({
 $('.has-tip').frosty({
   offset: 15
 });
+
+OR
+
+&lt;a class="has-tip" data-offset="15"...
 </pre>
             <div class="option">
               <h5>position (string) <span class="default">defaults to 'top'</span>  <a class="toggle" data-toggle="#position">ex.</a></h5>
@@ -219,6 +232,19 @@ $('.has-tip').frosty({
 <pre class="hidden example" id="position">
 $('.has-tip').frosty({
   positon: 'right'
+});
+
+OR
+
+&lt;a class="has-tip" data-position="right"...
+</pre>
+            <div class="option">
+              <h5>removeTitle (boolean) <span class="default">defaults to true</span>  <a class="toggle" data-toggle="#selector">ex.</a></h5>
+              <p>Removes the original title from the anchor element.</p>
+            </div>
+<pre class="hidden example" id="selector">
+$('.has-tip').frosty({
+  removeTitle: true
 });
 </pre>
             <div class="option">
@@ -229,6 +255,10 @@ $('.has-tip').frosty({
 $('.has-tip').frosty({
   selector: '#tip-template'
 });
+
+OR
+
+&lt;a class="has-tip" data-selector="#tip-template"...
 </pre>
             <div class="option">
               <h5>trigger (string) <span class="default">defaults to 'hover'</span> <a class="toggle" data-toggle="#trigger">ex.</a></h5>
@@ -238,6 +268,10 @@ $('.has-tip').frosty({
 $('.has-tip').frosty({
   trigger: 'focus' // for inputs
 });
+
+OR
+
+&lt;a class="has-tip" data-trigger="focus"...
 </pre>
             <div class="option">
               <h5>onHidden (function) <span class="default">defaults to empty function</span> <a class="toggle" data-toggle="#onHidden">ex.</a></h5>
