@@ -145,7 +145,7 @@ $('.has-tip').frosty('toggle');
           </section>
           <section id="options">
             <h2>Options</h2>
-            <p>Options can be set by passing an object on initializing or by adding attributes to the tooltip element.</p>
+            <p>Options can be set by passing an object on initialization or by adding attributes to the tooltip element.</p>
             <div class="option">
               <h5>attribute (string) <span class="default">defaults to 'title'</span> <a class="toggle" data-toggle="#title">ex.</a></h5>
               <p>Attribute the tip is pulled from.</p>
@@ -160,13 +160,17 @@ OR
 &lt;a class="has-tip" data-attribute="data-title"...
 </pre>
             <div class="option">
-              <h5>className (string) <span class="default">defaults to 'tip'</span>  <a class="toggle" data-toggle="#className">ex.</a></h5>
+              <h5>classes (string) <span class="default">defaults to 'tip'</span>  <a class="toggle" data-toggle="#classes">ex.</a></h5>
               <p>CSS class(es) applied to the tooltip. Same behavior as the class attribute on an element.</p>
             </div>
-<pre class="hidden example" id="className">
+<pre class="hidden example" id="classes">
 $('.has-tip').frosty({
-  className: 'tip light'
+  classes: 'tip light'
 });
+
+OR
+
+&lt;a class="has-tip" data-classes="tip light"...
 </pre>
             <div class="option">
               <h5>content (string) <span class="default">defaults to ''</span>  <a class="toggle" data-toggle="#content">ex.</a></h5>
