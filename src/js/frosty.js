@@ -27,18 +27,18 @@
 
     var pluginName = "frosty";
     var defaults = {
+        attribute: 'title',
         className: 'tip',
         content: '',
-        html: false,
-        selector: false,
-        attribute: 'title',
         delay: 0,
         hasArrow: true,
+        html: false,
         offset: 10,
-        onHidden: function() {},
-        onShown: function() {},
         position: 'top',
-        trigger: 'hover'
+        selector: false,
+        trigger: 'hover',
+        onHidden: function() {},
+        onShown: function() {}
     };
 
     function Frosty(anchor, options) {
@@ -93,6 +93,7 @@
             switch (state) {
                 case 'visible':
                     this.$el.appendTo('body');
+                    this._checkContent();
                     this._setPosition();
                     this.options.onShown.call(this);
                     this.$anchor.trigger('shown');
@@ -102,6 +103,13 @@
                     this.options.onHidden.call(this);
                     this.$anchor.trigger('hidden');
                     break;
+            }
+        },
+
+        _checkContent: function() {
+            if (this.options.selector) {
+                this.tipContent = $(this.options.selector).html();
+                this.$el.html(this.tipContent);
             }
         },
 
