@@ -1,11 +1,10 @@
 /*  ========================================================================
- *  Frosty.js v1.0
- *  https://github.com/owensbla/frosty
- *  http://labs.blakeowens.com/frosty
+ *  Frosty.js v1.01
+ *  https://owensbla.github.com/frosty/
  *
  *  Plugin boilerplate provied by: http://jqueryboilerplate.com/
  *  ========================================================================
- *  Copyright 2013 Blake Owens
+ *  Copyright 2013 Blake Owens (http://blakeowens.com/)
  *  
  *  Permission is hereby granted, free of charge, to any person obtaining a copy of this software
  *  and associated documentation files (the "Software"), to deal in the Software without restriction,
@@ -28,7 +27,7 @@
     var pluginName = "frosty";
     var defaults = {
         attribute: 'title',
-        className: 'tip',
+        classes: 'tip',
         content: '',
         delay: 0,
         hasArrow: true,
@@ -128,7 +127,7 @@
             }
 
             this.$el = $('<div />', {
-                'class': this.options.className,
+                'class': this.options.classes,
                 html: this.tipContent
             }).css({
                 'z-index': '9999',
