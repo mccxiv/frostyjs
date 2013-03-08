@@ -1,5 +1,5 @@
 /*  ========================================================================
- *  Frosty.js v1.01
+ *  Frosty.js v1.02
  *  https://owensbla.github.com/frosty/
  *
  *  Plugin boilerplate provied by: http://jqueryboilerplate.com/
@@ -56,6 +56,139 @@
             this._bindEvents();
         },
 
+        _createTip: function() {
+            if (this.options.html) {
+                this.tipContent = this.options.content;
+            } else if (this.options.selector) {
+                this.tipContent = $(this.options.selector).html();
+            } else {
+                this.tipContent = this.$anchor.attr(this.options.attribute);
+                if (this.options.attribute === 'title' && this.options.removeTitle) {
+                    this.$anchor.attr('data-original-title', this.tipContent);
+                    this.$anchor.removeAttr('title');
+                }
+            }
+
+            this.$el = $('<div />', {
+                'class': this.options.classes,
+                html: this.tipContent
+            }).css({
+                'z-index': '9999',
+                'left': '-9999px',
+                'position': 'absolute'
+            });
+
+            this.$el.appendTo('body');
+            var coords = this._getPosition();
+            this.$el.detach().css(coords);
+
+            if (this.options.hasArrow) { this._addArrowClass(); }
+        },
+
+        _bindEvents: function() {
+            switch (this.options.trigger) {
+                case 'click':
+                    this.$anchor.click($.proxy(this.toggle, this));
+                    break
+                case 'manual':
+                    break;
+                case 'focus':
+                    this.$anchor.focus($.proxy(this.show, this));
+                    this.$anchor.blur($.proxy(this.hide, this));
+                    break;
+                default:
+                    this.$anchor.hover($.proxy(this.show, this), $.proxy(this.hide, this));
+            }
+
+            $(window).resize($.proxy(this._setPosition, this));
+        },
+
+        _setState: function(state) {
+            this.state = state;
+            switch (state) {
+                case 'visible':
+                    this.$el.appendTo('body');
+                    this._checkContent();
+                    this._setPosition();
+                    this.options.onShown.call(this);
+                    this.$anchor.trigger('shown');
+                    break;
+                case 'hidden':
+                    this.$el.detach();
+                    this.options.onHidden.call(this);
+                    this.$anchor.trigger('hidden');
+                    break;
+            }
+        },
+
+        _checkContent: function() {
+            if (this.options.selector) {
+                this.tipContent = $(this.options.selector).html();
+                this.$el.html(this.tipContent);
+            }
+        },
+
+        _addArrowClass: function() {
+            switch (this.options.position) {
+                case 'left':
+                    this.$el.addClass('arrow-right');
+                    break;
+                case 'right':
+                    this.$el.addClass('arrow-left');
+                    break;
+                case 'bottom':
+                    this.$el.addClass('arrow-top');
+                    break;
+                default:
+                    this.$el.addClass('arrow-bottom');
+            }
+        },
+
+        _getPosition: function () {
+            var coords = this.$anchor.offset();
+            switch (this.options.position) {
+                case 'left':
+                    coords.left = coords.left - this.$el.outerWidth() - this.options.offset;
+                    coords.top = coords.top + (this.$anchor.outerHeight() / 2) - (this.$el.outerHeight() / 2);
+                    break;
+                case 'right':
+                    coords.left = coords.left + this.$anchor.outerWidth() + this.options.offset;
+                    coords.top = coords.top + (this.$anchor.outerHeight() / 2) - (this.$el.outerHeight() / 2);
+                    break;
+                case 'bottom':
+                    coords.top = coords.top + this.$anchor.outerHeight() + this.options.offset;
+                    coords.left = coords.left + (this.$anchor.outerWidth() / 2) - (this.$el.outerWidth() / 2);
+                    break;
+                default:
+                    coords.top = coords.top - this.$el.outerHeight() - this.options.offset;
+                    coords.left = coords.left + (this.$anchor.outerWidth() / 2) - (this.$el.outerWidth() / 2);
+            }
+            return coords;
+        },
+
+        _checkOverflow: function(coords) {
+            var originalPosition = this.options.position;
+            
+            if (coords.top < 0) { this.options.position = 'bottom'; }
+            if (coords.top + this.$el.height() > $(window).height()) { this.options.position = 'top'; }
+            if (coords.left < 0) { this.options.position = 'right'; }
+            if (coords.left + this.$el.width() > $(window).width()) { this.options.position = 'left'; }
+
+            if (this.options.position !== originalPosition) { 
+                coords = this._getPosition();
+                this.$el.attr('class', this.options.classes);
+                this._addArrowClass();
+            }
+
+            return coords;
+        },
+
+        _setPosition: function() {
+            var coords = this._getPosition();
+            coords = this._checkOverflow(coords);
+            this.$el.css(coords);
+        },
+
         show: function() {
             var _this = this,
                 delay = typeof this.options.delay === 'object' ? parseInt(this.options.delay.show) : parseInt(this.options.delay);
@@ -86,121 +219,8 @@
 
         removeClass: function(klass) {
             if (typeof klass === 'string') { this.$el.removeClass(klass); }
-        },
-
-        _setState: function(state) {
-            this.state = state;
-            switch (state) {
-                case 'visible':
-                    this.$el.appendTo('body');
-                    this._checkContent();
-                    this._setPosition();
-                    this.options.onShown.call(this);
-                    this.$anchor.trigger('shown');
-                    break;
-                case 'hidden':
-                    this.$el.detach();
-                    this.options.onHidden.call(this);
-                    this.$anchor.trigger('hidden');
-                    break;
-            }
-        },
-
-        _checkContent: function() {
-            if (this.options.selector) {
-                this.tipContent = $(this.options.selector).html();
-                this.$el.html(this.tipContent);
-            }
-        },
-
-        _createTip: function() {
-            if (this.options.html) {
-                this.tipContent = this.options.content;
-            } else if (this.options.selector) {
-                this.tipContent = $(this.options.selector).html();
-            } else {
-                this.tipContent = this.$anchor.attr(this.options.attribute);
-                if (this.options.attribute === 'title' && this.options.removeTitle) {
-                    this.$anchor.attr('data-original-title', this.tipContent);
-                    this.$anchor.removeAttr('title');
-                }
-            }
-
-            this.$el = $('<div />', {
-                'class': this.options.classes,
-                html: this.tipContent
-            }).css({
-                'z-index': '9999',
-                'left': '-9999px',
-                'position': 'absolute'
-            });
-
-            this.$el.appendTo('body');
-            var coords = this.getPosition();
-            this.$el.detach().css(coords);
-
-            if (this.options.hasArrow) { this._addArrowClass(); }
-        },
-
-        _addArrowClass: function() {
-            switch (this.options.position) {
-                case 'left':
-                    this.$el.addClass('arrow-right');
-                    break;
-                case 'right':
-                    this.$el.addClass('arrow-left');
-                    break;
-                case 'bottom':
-                    this.$el.addClass('arrow-top');
-                    break;
-                default:
-                    this.$el.addClass('arrow-bottom');
-            }
-        },
-
-        _bindEvents: function() {
-            switch (this.options.trigger) {
-                case 'click':
-                    this.$anchor.click($.proxy(this.toggle, this));
-                    break
-                case 'manual':
-                    break;
-                case 'focus':
-                    this.$anchor.focus($.proxy(this.show, this));
-                    this.$anchor.blur($.proxy(this.hide, this));
-                    break;
-                default:
-                    this.$anchor.hover($.proxy(this.show, this), $.proxy(this.hide, this));
-            }
-
-            $(window).resize($.proxy(this._setPosition, this));
-        },
-
-        getPosition: function () {
-            var coords = this.$anchor.offset();
-            switch (this.options.position) {
-                case 'left':
-                    coords.left = coords.left - this.$el.outerWidth() - this.options.offset;
-                    coords.top = coords.top + (this.$anchor.outerHeight() / 2) - (this.$el.outerHeight() / 2);
-                    break;
-                case 'right':
-                    coords.left = coords.left + this.$anchor.outerWidth() + this.options.offset;
-                    coords.top = coords.top + (this.$anchor.outerHeight() / 2) - (this.$el.outerHeight() / 2);
-                    break;
-                case 'bottom':
-                    coords.top = coords.top + this.$anchor.outerHeight() + this.options.offset;
-                    coords.left = coords.left + (this.$anchor.outerWidth() / 2) - (this.$el.outerWidth() / 2);
-                    break;
-                default:
-                    coords.top = coords.top - this.$el.outerHeight() - this.options.offset;
-                    coords.left = coords.left + (this.$anchor.outerWidth() / 2) - (this.$el.outerWidth() / 2);
-            }
-            return coords;
-        },
-
-        _setPosition: function() {
-            this.$el.css(this.getPosition());
         }
+
     };
 
     $.fn[pluginName] = function (options, args) {
