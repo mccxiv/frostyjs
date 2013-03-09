@@ -1,5 +1,5 @@
 /*  ========================================================================
- *  Frosty.js v1.02
+ *  Frosty.js v1.03
  *  https://owensbla.github.com/frosty/
  *
  *  Plugin boilerplate provied by: http://jqueryboilerplate.com/
@@ -80,6 +80,7 @@
 
             this.$el.appendTo('body');
             var coords = this._getPosition();
+            coords = this._checkOverflow(coords);
             this.$el.detach().css(coords);
 
             if (this.options.hasArrow) { this._addArrowClass(); }
