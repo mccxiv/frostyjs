@@ -1,5 +1,5 @@
 /*  ========================================================================
- *  Frosty.js v1.03
+ *  Frosty.js v1.04
  *  https://owensbla.github.com/frosty/
  *
  *  Plugin boilerplate provied by: http://jqueryboilerplate.com/
@@ -36,6 +36,7 @@
         position: 'top',
         removeTitle: true,
         selector: false,
+        smartReposition: true,
         trigger: 'hover',
         onHidden: function() {},
         onShown: function() {}
@@ -52,6 +53,7 @@
 
     Frosty.prototype = {
         init: function () {
+            this.rid = Math.random().toString(36).substr(2, 16); // used to uniquely unbind the window resize events
             this._createTip();
             this._bindEvents();
         },
@@ -89,19 +91,20 @@
         _bindEvents: function() {
             switch (this.options.trigger) {
                 case 'click':
-                    this.$anchor.click($.proxy(this.toggle, this));
-                    break
+                    this.$anchor.on('click.' + pluginName, $.proxy(this.toggle, this));
+                    break;
                 case 'manual':
                     break;
                 case 'focus':
-                    this.$anchor.focus($.proxy(this.show, this));
-                    this.$anchor.blur($.proxy(this.hide, this));
+                    this.$anchor.on('focus.' + pluginName, $.proxy(this.show, this));
+                    this.$anchor.on('blur.' + pluginName, $.proxy(this.hide, this));
                     break;
                 default:
-                    this.$anchor.hover($.proxy(this.show, this), $.proxy(this.hide, this));
+                    this.$anchor.on('mouseenter.' + pluginName, $.proxy(this.show, this));
+                    this.$anchor.on('mouseleave.' + pluginName, $.proxy(this.hide, this));
             }
 
-            $(window).resize($.proxy(this._setPosition, this));
+            $(window).on('resize.' + this.rid, $.proxy(this._setPosition, this));
         },
 
         _setState: function(state) {
@@ -168,6 +171,7 @@
         },
 
         _checkOverflow: function(coords) {
+            if (!this.options.smartReposition) { return coords; }
             var originalPosition = this.options.position;
             
             if (coords.top < 0) { this.options.position = 'bottom'; }
@@ -175,7 +179,7 @@
             if (coords.left < 0) { this.options.position = 'right'; }
             if (coords.left + this.$el.width() > $(window).width()) { this.options.position = 'left'; }
 
-            if (this.options.position !== originalPosition) { 
+            if (this.options.position !== originalPosition) {
                 coords = this._getPosition();
                 this.$el.attr('class', this.options.classes);
                 this._addArrowClass();
@@ -192,21 +196,21 @@
 
         show: function() {
             var _this = this,
-                delay = typeof this.options.delay === 'object' ? parseInt(this.options.delay.show) : parseInt(this.options.delay);
+                delay = typeof this.options.delay === 'object' ? parseInt(this.options.delay.show, 10) : parseInt(this.options.delay, 10);
             
             clearTimeout(this.timeout);
-            this.timeout = delay === 0 ? 
-                this._setState('visible') : 
-                setTimeout(function() { _this._setState('visible'); }, delay); 
+            this.timeout = delay === 0 ?
+                this._setState('visible') :
+                setTimeout(function() { _this._setState('visible'); }, delay);
         },
 
         hide: function() {
-            var _this = this
-                delay = typeof this.options.delay === 'object' ? parseInt(this.options.delay.hide) : parseInt(this.options.delay);
+            var _this = this,
+                delay = typeof this.options.delay === 'object' ? parseInt(this.options.delay.hide, 10) : parseInt(this.options.delay, 10);
 
             clearTimeout(this.timeout);
-            this.timeout = delay === 0 ? 
-                this._setState('hidden') : 
+            this.timeout = delay === 0 ?
+                this._setState('hidden') :
                 setTimeout(function() { _this._setState('hidden'); }, delay);
         },
 
@@ -220,34 +224,49 @@
 
         removeClass: function(klass) {
             if (typeof klass === 'string') { this.$el.removeClass(klass); }
+        },
+
+        destroy: function() {
+            $(window).off('resize.' + this.rid);
+            this.$el.hide();
+            this.$anchor.removeData('plugin_' + pluginName);
+            this.$anchor.off('.' + pluginName);
+            this.$el.remove();
         }
 
     };
 
     $.fn[pluginName] = function (options, args) {
         if (typeof options === 'string') {
-            switch (options) {
-                case 'show':
-                    this.each(function() { $.data(this, "plugin_" + pluginName)['show'](); });
-                    break;
-                case 'hide':
-                    this.each(function() { $.data(this, "plugin_" + pluginName)['hide'](); });
-                    break;
-                case 'toggle': 
-                    this.each(function() { $.data(this, "plugin_" + pluginName)['toggle'](); });
-                    break;
-                case 'addClass':
-                    this.each(function() { $.data(this, "plugin_" + pluginName)['addClass'](args); });
-                    break;
-                case 'removeClass':
-                    this.each(function() { $.data(this, "plugin_" + pluginName)['removeClass'](args); });
-                    break;
-            }
+            this.each(function() {
+                if (!$.data(this, 'plugin_' + pluginName)) { return; }
+                switch (options) {
+                    case 'show':
+                        $.data(this, "plugin_" + pluginName)['show']();
+                        break;
+                    case 'hide':
+                        $.data(this, "plugin_" + pluginName)['hide']();
+                        break;
+                    case 'toggle': 
+                        $.data(this, "plugin_" + pluginName)['toggle']();
+                        break;
+                    case 'addClass':
+                        $.data(this, "plugin_" + pluginName)['addClass'](args);
+                        break;
+                    case 'removeClass':
+                        $.data(this, "plugin_" + pluginName)['removeClass'](args);
+                        break;
+                    case 'destroy':
+                        $.data(this, "plugin_" + pluginName)['destroy']();
+                        break;
+                }
+            });
+        } else {
+            return this.each(function () {
+                if (!$.data(this, "plugin_" + pluginName)) {
+                    $.data(this, "plugin_" + pluginName, new Frosty(this, options));
+                }
+            });
         }
-        return this.each(function () {
-            if (!$.data(this, "plugin_" + pluginName)) {
-                $.data(this, "plugin_" + pluginName, new Frosty(this, options));
-            }
-        });
     };
 })(jQuery, window, document);
