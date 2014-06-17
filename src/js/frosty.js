@@ -115,12 +115,12 @@
                     this._checkContent();
                     this._setPosition();
                     this.options.onShown.call(this);
-                    this.$anchor.trigger('shown');
+                    this.$anchor.triggerHandler('shown');
                     break;
                 case 'hidden':
                     this.$el.detach();
                     this.options.onHidden.call(this);
-                    this.$anchor.trigger('hidden');
+                    this.$anchor.triggerHandler('hidden');
                     break;
             }
         },
