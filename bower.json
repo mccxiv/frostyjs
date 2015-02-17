@@ -1,0 +1,27 @@
+{
+  "name": "frosty",
+  "version": "1.05",
+  "homepage": "https://github.com/owensbla/frostyjs",
+  "authors": [
+    "Blake <blake@blakeowens.com>"
+  ],
+  "description": "Lightweight, extendable jQuery tooltip plugin.",
+  "main": "['dist/css/frosty.min.css', 'dist/js/frosty.min.js']",
+  "keywords": [
+    "tooltips",
+    "jquery",
+    "tips",
+    "tooltip"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "~2.1.3"
+  }
+}

@@ -1,5 +1,9 @@
 # Changelog
 
+## v 1.05:
+
+* Reorganized and created bower package.
+
 ## v 1.04:
 
 * Responsive: Reposition on window resize
