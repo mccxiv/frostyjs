@@ -1,5 +1,5 @@
 /*  ========================================================================
- *  Frosty.js v1.05
+ *  Frosty.js v1.0.5
  *  https://owensbla.github.com/frosty/
  *
  *  Plugin boilerplate provied by: http://jqueryboilerplate.com/

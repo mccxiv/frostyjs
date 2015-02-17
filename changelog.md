@@ -1,10 +1,10 @@
 # Changelog
 
-## v 1.05:
+## v 1.0.5:
 
 * Reorganized and created bower package.
 
-## v 1.04:
+## v 1.0.4:
 
 * Responsive: Reposition on window resize
 * `destroy` method: Use $('.has-tip').frosty('destroy') to unbind events and remove the tooltips. Useful for cleanup in single page applications.

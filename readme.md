@@ -1,6 +1,10 @@
 ## Frosty.js
 Lightweight, extendable jQuery tooltip plugin.
 
+## Installation
+
+`bower install frosty` or pull down the js/css files in the `dist` folder and place them in your project.
+
 ## Basic Usage
 
     <span class="has-tip" title="This is a helpful tip.">?</span>
