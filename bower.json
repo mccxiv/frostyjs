@@ -6,7 +6,7 @@
     "Blake <blake@blakeowens.com>"
   ],
   "description": "Lightweight, extendable jQuery tooltip plugin.",
-  "main": "['dist/css/frosty.min.css', 'dist/js/frosty.min.js']",
+  "main": ["dist/css/frosty.min.css", "dist/js/frosty.min.js"],
   "keywords": [
     "tooltips",
     "jquery",
